@@ -34,7 +34,7 @@ const TypingTest = () => {
       correctChar,
       errorChar,
     },
-    actions: { insertTyping, resetTyping, deleteTyping, endTyping, pauseTyping }
+    actions: { insertTyping, resetTyping, deleteTyping, endTyping }
   } = useTypingGame(quote, {
     skipCurrentWordOnSpace: false,
     pauseOnError: false,
@@ -88,13 +88,14 @@ const TypingTest = () => {
     
     const key = e.key;
     if (key === "Escape") {
-      pauseTyping();
+      // Since pauseTyping is not available, we'll use endTyping instead
+      endTyping();
     } else if (key === "Backspace") {
       deleteTyping();
     } else if (key.length === 1) {
       insertTyping(key);
     }
-  }, [phase, deleteTyping, insertTyping, pauseTyping]);
+  }, [phase, deleteTyping, insertTyping, endTyping]);
 
   return (
     <div className="min-h-screen bg-white dark:bg-tech-darkBlue dark:text-gray-100 flex flex-col">
@@ -172,13 +173,13 @@ const TypingTest = () => {
             New Quote
           </Button>
           {phase === 0 && (
-            <Button onClick={() => phase !== 1 && insertTyping(quote[0])} className="flex items-center gap-2">
+            <Button onClick={() => phase === 0 && insertTyping(quote[0])} className="flex items-center gap-2">
               <Play className="h-4 w-4" />
               Start
             </Button>
           )}
           {phase === 1 && (
-            <Button onClick={pauseTyping} className="flex items-center gap-2">
+            <Button onClick={endTyping} className="flex items-center gap-2">
               <Pause className="h-4 w-4" />
               Pause
             </Button>
