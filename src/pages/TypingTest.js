@@ -83,12 +83,11 @@ const TypingTest = () => {
   }, [phase, startTime, correctChar, errorChar, wordCount, quote]);
 
   // Handle key presses
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = useCallback((e) => {
     if (phase === 2) return;
     
     const key = e.key;
     if (key === "Escape") {
-      // Since pauseTyping is not available, we'll use endTyping instead
       endTyping();
     } else if (key === "Backspace") {
       deleteTyping();

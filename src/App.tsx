@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import TypingTest from "./pages/TypingTest";
+import TypingTest from "./pages/TypingTest.js";
 
 const queryClient = new QueryClient();
 
