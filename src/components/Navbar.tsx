@@ -1,16 +1,19 @@
 
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { Keyboard } from "lucide-react";
+import { useMobile } from "@/hooks/use-mobile";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isMobile = useMobile();
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
+      if (window.scrollY > 20) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -18,111 +21,132 @@ const Navbar = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Experience", href: "#experience" },
-    { name: "Projects", href: "#projects" },
-    { name: "Contact", href: "#contact" },
-  ];
+  // Close menu when clicking on a link (mobile)
+  const handleLinkClick = () => {
+    setIsMenuOpen(false);
+  };
 
   return (
     <header
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`sticky top-0 w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/90 backdrop-blur-sm shadow-md py-3 dark:bg-tech-darkBlue/90"
-          : "bg-transparent py-5"
+          ? "bg-white/80 backdrop-blur-md shadow-sm dark:bg-tech-darkBlue/80"
+          : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-4 flex justify-between items-center">
-        <a href="#home" className="text-2xl font-bold text-tech-blue font-poppins dark:text-white">
-          Masoom<span className="text-tech-purple">.dev</span>
-        </a>
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
+          <Link to="/" className="text-xl font-bold text-gradient">
+            Masoom Yadav
+          </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="text-gray-700 hover:text-tech-purple transition-colors font-medium dark:text-gray-200"
+          <div className="hidden md:flex items-center space-x-1">
+            <Link
+              to="/#about"
+              className="px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-tech-blue transition-colors"
             >
-              {link.name}
-            </a>
-          ))}
-          <ThemeToggle />
-          <Button className="bg-tech-purple hover:bg-tech-purple/90">
-            Resume
-          </Button>
-        </nav>
+              About
+            </Link>
+            <Link
+              to="/#experience"
+              className="px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-tech-blue transition-colors"
+            >
+              Experience
+            </Link>
+            <Link
+              to="/#projects"
+              className="px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-tech-blue transition-colors"
+            >
+              Projects
+            </Link>
+            <Link
+              to="/#contact"
+              className="px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-tech-blue transition-colors"
+            >
+              Contact
+            </Link>
+            <Link
+              to="/typing-test"
+              className="px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-tech-blue transition-colors flex items-center gap-1"
+            >
+              <Keyboard className="h-4 w-4" />
+              Typing Test
+            </Link>
+            <ThemeToggle />
+          </div>
 
-        {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center gap-2">
-          <ThemeToggle />
-          <button
-            className="text-gray-700 dark:text-gray-200 focus:outline-none"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Navigation */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-white dark:bg-tech-darkBlue shadow-lg animate-fade-in">
-          <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-gray-700 dark:text-gray-200 py-2 hover:text-tech-purple transition-colors font-medium"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.name}
-              </a>
-            ))}
-            <Button className="bg-tech-purple hover:bg-tech-purple/90 w-full">
-              Resume
-            </Button>
+          <div className="flex items-center md:hidden">
+            <Link
+              to="/typing-test"
+              className="mr-2"
+            >
+              <Button variant="ghost" size="icon">
+                <Keyboard className="h-5 w-5" />
+              </Button>
+            </Link>
+            <ThemeToggle />
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="ml-2 p-2"
+            >
+              <div className="w-6 flex flex-col items-end gap-1.5">
+                <span
+                  className={`block h-0.5 bg-foreground transition-all duration-300 ${
+                    isMenuOpen ? "w-6 -rotate-45 translate-y-2" : "w-6"
+                  }`}
+                ></span>
+                <span
+                  className={`block h-0.5 bg-foreground transition-all duration-300 ${
+                    isMenuOpen ? "opacity-0" : "w-4"
+                  }`}
+                ></span>
+                <span
+                  className={`block h-0.5 bg-foreground transition-all duration-300 ${
+                    isMenuOpen ? "w-6 rotate-45 -translate-y-2" : "w-5"
+                  }`}
+                ></span>
+              </div>
+            </button>
           </div>
         </div>
-      )}
+
+        {/* Mobile menu */}
+        {isMenuOpen && isMobile && (
+          <div className="md:hidden mt-4 pb-2 animate-fade-in">
+            <Link
+              to="/#about"
+              className="block px-4 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-tech-blue"
+              onClick={handleLinkClick}
+            >
+              About
+            </Link>
+            <Link
+              to="/#experience"
+              className="block px-4 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-tech-blue"
+              onClick={handleLinkClick}
+            >
+              Experience
+            </Link>
+            <Link
+              to="/#projects"
+              className="block px-4 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-tech-blue"
+              onClick={handleLinkClick}
+            >
+              Projects
+            </Link>
+            <Link
+              to="/#contact"
+              className="block px-4 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-tech-blue"
+              onClick={handleLinkClick}
+            >
+              Contact
+            </Link>
+          </div>
+        )}
+      </div>
     </header>
   );
 };
