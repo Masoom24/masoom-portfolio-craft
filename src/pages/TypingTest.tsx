@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback } from "react";
-import { useTypingGame } from "react-typing-game-hook";
+import useTypingGame from "react-typing-game-hook";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Redo, Play, Pause, Timer } from "lucide-react";
 import { Link } from "react-router-dom";
