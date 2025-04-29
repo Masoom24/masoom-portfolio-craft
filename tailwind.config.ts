@@ -57,7 +57,8 @@ export default {
         tech: {
           blue: "#1A1F2C",
           purple: "#9b87f5",
-          lightGray: "#F1F1F1"
+          lightGray: "#F1F1F1",
+          darkBlue: "#121620"
         }
 			},
 			borderRadius: {
